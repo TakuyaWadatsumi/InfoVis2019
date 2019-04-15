@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>W02: task2</title>
+    </head>
+    <body>
+        <input type="number"
+	     value="Click Me"
+	     id="click_me"/>
+        <script src="task2.js"></script>
+        <script>
+            var v = new Vec3( 5, 4, 8 );
+            var v1 = v.min();
+	    var v2 = v.mid();
+	    var v3 = v.max();
+            document.write(v1);
+	    document.write(v2);
+	    document.write(v3);
+        </script>
+    </body>
+</html>
