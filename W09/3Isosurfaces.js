@@ -65,12 +65,7 @@ function Isosurfaces( volume, isovalue )
     }
 
     geometry.computeVertexNormals();
-    var S = isovalue / 255; // [0,1]
-    var R = Math.max( Math.cos( ( S - 1.0 ) * Math.PI ), 0.0 );
-    var G = Math.max( Math.cos( ( S - 0.5 ) * Math.PI ), 0.0 );
-    var B = Math.max( Math.cos( S * Math.PI ), 0.0 );
-    material.color = new THREE.Color( R, G, B );
-
+    var material = new THREE.MeshLambertMaterial();
     return new THREE.Mesh( geometry, material );
 
 

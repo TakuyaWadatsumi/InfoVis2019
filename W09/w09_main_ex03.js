@@ -24,5 +24,6 @@ function main3()
         screen.resize( [ window.innerWidth, window.innerHeight ] );
     });
 
+
     screen.loop();
 }
