@@ -5,11 +5,13 @@ function Isosurfaces( volume, isovalue )
 
     var smin = volume.min_value;
     var smax = volume.max_value;
+    //document.write(isovalue);
     isovalue = KVS.Clamp( isovalue, smin, smax );
-
+    //document.write(isovalue);
     var lut = new KVS.MarchingCubesTable();
     var cell_index = 0;
     var counter = 0;
+    var count=0;
     for ( var z = 0; z < volume.resolution.z - 1; z++ )
     {
         for ( var y = 0; y < volume.resolution.y - 1; y++ )
@@ -20,6 +22,8 @@ function Isosurfaces( volume, isovalue )
                 var index = table_index( indices );
                 if ( index == 0 ) { continue; }
                 if ( index == 255 ) { continue; }
+                //document.write(index);
+                //document.write("test");
 
                 for ( var j = 0; lut.edgeID[index][j] != -1; j += 3 )
                 {
@@ -33,6 +37,8 @@ function Isosurfaces( volume, isovalue )
                     var vid3 = lut.vertexID[eid1][1];
                     var vid4 = lut.vertexID[eid2][0];
                     var vid5 = lut.vertexID[eid2][1];
+                    document.write(vid0);
+                    document.write("test");
 
                     var v0 = new THREE.Vector3( x + vid0[0], y + vid0[1], z + vid0[2] );
                     var v1 = new THREE.Vector3( x + vid1[0], y + vid1[1], z + vid1[2] );
@@ -41,9 +47,9 @@ function Isosurfaces( volume, isovalue )
                     var v4 = new THREE.Vector3( x + vid4[0], y + vid4[1], z + vid4[2] );
                     var v5 = new THREE.Vector3( x + vid5[0], y + vid5[1], z + vid5[2] );
 
-                    var v01 = interpolated_vertex( v0, v1, isovalue );
-                    var v23 = interpolated_vertex( v2, v3, isovalue );
-                    var v45 = interpolated_vertex( v4, v5, isovalue );
+                    var v01 = interpolated_vertex( v0, v1,0,1,indices, isovalue );
+                    var v23 = interpolated_vertex( v2, v3,2,3,indices, isovalue );
+                    var v45 = interpolated_vertex( v4, v5,4,5,indices, isovalue );
 
                     geometry.vertices.push( v01 );
                     geometry.vertices.push( v23 );
@@ -111,18 +117,18 @@ function Isosurfaces( volume, isovalue )
         return index;
     }
 
-    function interpolated_vertex( v0, v1, s )
+    function interpolated_vertex( v0, v1,v0_number,v1_number, number, s )
     {
-        var p=2*(s.x-v0.x)/(v1.x-v0.x)-1;
-        var q=2*(s.y-v0.y)/(v1.y-v0.y)-1;
-        var r=2*(s.z-v0.z)/(v1.z-v0.z)-1;
-        //var x=(v0.x+v1.x)/2.0;
-        //var y=(v0.y+v1.y)/2.0;
-        //var z=(v0.z+v1.z)/2.0;
+        var x=(v0.x+v1.x)/2.0;
+        var y=(v0.y+v1.y)/2.0;
+        var z=(v0.z+v1.z)/2.0;
         //v=new THREE.Vector3().addVectors( v0, v1 ).divideScalar( 2 );
         //document.write(Object.values(v)+"<br>");
         //return v;
         //return new THREE.Vector3().addVectors( v0, v1 ).divideScalar( 2 );
-        return new THREE.Vector3(p,q,r);
+        //document.write("x="+x+"y="+y+"z="+z);
+        //document.write("S0="+s0+"S1="+s1);
+        //document.write("x="+v1.x+"y="+v1.y+"z="+v1.z);
+        return new THREE.Vector3(x,y,z);
     }
 }
