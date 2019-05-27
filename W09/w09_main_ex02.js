@@ -1,4 +1,4 @@
-function main3()
+function main()
 {
     var volume = new KVS.LobsterData();
     var screen = new KVS.THREEScreen();

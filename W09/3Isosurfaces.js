@@ -1,7 +1,7 @@
 function Isosurfaces( volume, isovalue )
 {
     var geometry = new THREE.Geometry();
-    var material = new THREE.MeshLambertMaterial();
+    //var material = new THREE.MeshLambertMaterial();
 
     var smin = volume.min_value;
     var smax = volume.max_value;
@@ -65,7 +65,32 @@ function Isosurfaces( volume, isovalue )
     }
 
     geometry.computeVertexNormals();
-    var material = new THREE.MeshLambertMaterial();
+    var width = 500;
+    var height = 500;
+
+    var scene = new THREE.Scene();
+
+    var fov = 45;
+    var aspect = width / height;
+    var near = 1;
+    var far = 1000;
+    var camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
+    camera.position.set( 0, 0, 5 );
+    scene.add( camera );
+
+    var light = new THREE.PointLight();
+    light.position.set( 5, 5, 5 );
+    scene.add( light );
+
+    //var material = new THREE.MeshLambertMaterial();
+    var material = new THREE.ShaderMaterial({
+        vertexColors: THREE.VertexColors,
+        vertexShader: document.getElementById('gouraud.vert').text,
+        fragmentShader: document.getElementById('gouraud.frag').text,
+            uniforms: {
+            light_position: { type: 'v3', value: light.position }
+            }
+        });
     return new THREE.Mesh( geometry, material );
 
 

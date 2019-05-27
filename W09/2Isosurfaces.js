@@ -170,36 +170,9 @@ function Isosurfaces( volume, isovalue )
 
     function interpolated_vertex( v0, v1,s0,s1, number, s )
     {
-        //var s0 = volume.values[ indices[v0_number] ][0];
-        //var s1 = volume.values[ indices[v1_number] ][0];
-        //var s0 = volume.values[ number[v0_number] ][0];
-        //var s1 = volume.values[ number[v1_number] ][0];
-
-        //if(s0+s1==0){
-          //  var x=(v0.x+v1.x)/2.0;
-          //  var y=(v0.y+v1.y)/2.0;
-          //  var z=(v0.z+v1.z)/2.0;
-        //}
-        //else{
-          //  var x=(v0.x*s1+v1.x*s0)/(s0+s1);
-          //  var y=(v0.y*s1+v1.y*s0)/(s0+s1);
-          //  var z=(v0.z*s1+v1.z*s0)/(s0+s1);
-        //}
-  
         var x = (s1*v0.x-s0*v1.x-s*(v0.x-v1.x))/(s1-s0);
         var y = (s1*v0.y-s0*v1.y-s*(v0.y-v1.y))/(s1-s0);
         var z = (s1*v0.z-s0*v1.z-s*(v0.z-v1.z))/(s1-s0);
-        
-        //var x=(v0.x+v1.x)/2.0;
-        //var y=(v0.y+v1.y)/2.0;
-        //var z=(v0.z+v1.z)/2.0;
-        //v=new THREE.Vector3().addVectors( v0, v1 ).divideScalar( 2 );
-        //document.write(Object.values(v)+"<br>");
-        //return v;
-        //return new THREE.Vector3().addVectors( v0, v1 ).divideScalar( 2 );
-        //document.write("x="+x+"y="+y+"z="+z);
-        //document.write("S0="+s0+"S1="+s1);
-        //document.write("x="+v1.x+"y="+v1.y+"z="+v1.z);
         return new THREE.Vector3(x,y,z);
     }
 }
