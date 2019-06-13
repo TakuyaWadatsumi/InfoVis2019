@@ -6,7 +6,20 @@
 	<div id="display" style="width: 80%; float: left;"></div>
 	<div id="controller" style="width:20%; float:left;">
 	<label id="label" style="font-family:Arial;"></label>
+	<input type="range" min="1" max="128" step="1" value="1"
+	id="isovalue" oninput="document.getElementById('output1').value=this.value"/>
+	<output id="output1">1</output>
+	<input type='button'
+		 	value = "Apply"
+			onclick="main(rece_isovalue);"><br>
+	</div>
+	<script>
+			var rece_isovalue=Number(isovalue.value);
+			//var a=1;
+			document.write(typeof(rece_isovalue));
+	</script>
 
+	
 	<script src="https://threejs.org/build/three.min.js"></script>
 	<script type="x-shader/x-vertex" id="gouraud.vert">
 		varying vec3 point_color;
@@ -40,18 +53,7 @@
 		gl_FragColor = vec4( point_color, 1.0 );
 		}
 	</script>
-	<input type="range" min="1" max="128" step="1" value="1"
-	id="isovalue" oninput="document.getElementById('output1').value=this.value"/>
-	<output id="output1">1</output>
-	<input type='button'
-		 	value = "Apply"
-			onclick="main(rece_isovalue);"><br>
-	</div>
-	<script>
-			var rece_isovalue=Number(isovalue.value);
-			//var a=1;
-			document.write(typeof(rece_isovalue));
-	</script>
+
 	<script src="three.min.js"></script>
 	<script src="TrackballControls.js"></script>
 	<script src="http://threejs.org/examples/js/math/Lut.js"></script>
