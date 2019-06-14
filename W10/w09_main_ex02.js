@@ -18,7 +18,7 @@ function main()
     //document.write(isovalue);
     var surfaces = Isosurfaces( volume, isovalue );
     screen.scene.add( surfaces );
-
+    //document.write(screen);
     document.addEventListener( 'mousemove', function() {
         screen.light.position.copy( screen.camera.position );
     });
@@ -28,9 +28,19 @@ function main()
     });
 
     slider.addEventListener( 'input',function(){
+        //isovalue = slider.value;
+        //surfaces[0].dispose();
+        //surfaces[1].dispose();
+        screen.scene.remove( surfaces );
+        //delete surfaces;
+        //surfaces.dispose();
+        //document.write(surfaces);
+        //texture.dispose();
+        screen.scene.length = 0;
         isovalue = slider.value;
-        var surfaces = Isosurfaces( volume, isovalue );
+        surfaces = Isosurfaces( volume, isovalue );
         screen.scene.add( surfaces );
+        //document.write(screen);
     });
 
     screen.loop();

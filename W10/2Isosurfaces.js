@@ -70,9 +70,10 @@ function Isosurfaces( volume, isovalue )
     var G = Math.max( Math.cos( ( S - 0.5 ) * Math.PI ), 0.0 );
     var B = Math.max( Math.cos( S * Math.PI ), 0.0 );
     material.color = new THREE.Color( R, G, B );
-
-    return new THREE.Mesh( geometry, material );
-
+    mesh = new THREE.Mesh( geometry, material );
+    removefig();
+    //return new THREE.Mesh( geometry, material );
+    return mesh;
 
     function cell_node_indices( cell_index )
     {
@@ -174,5 +175,10 @@ function Isosurfaces( volume, isovalue )
         var y = (s1*v0.y-s0*v1.y-s*(v0.y-v1.y))/(s1-s0);
         var z = (s1*v0.z-s0*v1.z-s*(v0.z-v1.z))/(s1-s0);
         return new THREE.Vector3(x,y,z);
+    }
+
+    function removefig(){
+        geometry.dispose();
+        material.dispose();
     }
 }
