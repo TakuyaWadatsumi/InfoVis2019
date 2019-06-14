@@ -1,4 +1,4 @@
-function main()
+function main(rece_isovalue)
 {
     var volume = new KVS.LobsterData();
     var screen = new KVS.THREEScreen();
@@ -12,9 +12,7 @@ function main()
     var bounds = Bounds( volume );
     screen.scene.add( bounds );
 
-    var slider = document.querySelector("[type=range]");
-
-    var isovalue = 40;
+    var isovalue = rece_isovalue;
     //document.write(isovalue);
     var surfaces = Isosurfaces( volume, isovalue );
     screen.scene.add( surfaces );
@@ -25,12 +23,6 @@ function main()
 
     window.addEventListener( 'resize', function() {
         screen.resize( [ window.innerWidth*0.8, window.innerHeight ] );
-    });
-
-    slider.addEventListener( 'input',function(){
-        isovalue = slider.value;
-        var surfaces = Isosurfaces( volume, isovalue );
-        screen.scene.add( surfaces );
     });
 
     screen.loop();
