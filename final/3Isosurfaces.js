@@ -1,4 +1,4 @@
-function Isosurfaces( volume, isovalue )
+function Isosurfaces( volume, isovalue ,flag)
 {
     var geometry = new THREE.Geometry();
     //var material = new THREE.MeshLambertMaterial();
@@ -44,11 +44,11 @@ function Isosurfaces( volume, isovalue )
                     var v3 = new THREE.Vector3( x + vid3[0], y + vid3[1], z + vid3[2] );
                     var v4 = new THREE.Vector3( x + vid4[0], y + vid4[1], z + vid4[2] );
                     var v5 = new THREE.Vector3( x + vid5[0], y + vid5[1], z + vid5[2] );
-
+                   
                     var v01 = interpolated_vertex( v0, v1, re_vertex(eid0)[0],re_vertex(eid0)[1],indices, isovalue );
-                    var v23 = interpolated_vertex( v2, v3, re_vertex(eid1)[0],re_vertex(eid1)[1],indices, isovalue );
+                    var v23 = interpolated_vertex( v2, v3, re_vertex(eid1)[0],re_vertex(eid1)[1],indices, isovalue ); 
                     var v45 = interpolated_vertex( v4, v5, re_vertex(eid2)[0],re_vertex(eid2)[1],indices, isovalue );
-
+                    
                     geometry.vertices.push( v01 );
                     geometry.vertices.push( v23 );
                     geometry.vertices.push( v45 );
@@ -63,16 +63,52 @@ function Isosurfaces( volume, isovalue )
         }
         cell_index += volume.resolution.x;
     }
-
+    if(flag==0){
+    var material = new THREE.MeshLambertMaterial();
     geometry.computeVertexNormals();
     var S = isovalue / 255; // [0,1]
     var R = Math.max( Math.cos( ( S - 1.0 ) * Math.PI ), 0.0 );
     var G = Math.max( Math.cos( ( S - 0.5 ) * Math.PI ), 0.0 );
     var B = Math.max( Math.cos( S * Math.PI ), 0.0 );
     material.color = new THREE.Color( R, G, B );
+    mesh = new THREE.Mesh( geometry, material );
+    removefig();
+    //return new THREE.Mesh( geometry, material );
+    return mesh;
+    }
+    if(flag==1){
+    geometry.computeVertexNormals();
+    var width = 500;
+    var height = 500;
 
-    return new THREE.Mesh( geometry, material );
+    var scene = new THREE.Scene();
 
+    var fov = 45;
+    var aspect = width / height;
+    var near = 1;
+    var far = 1000;
+    var camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
+    camera.position.set( 0, 0, 5 );
+    scene.add( camera );
+
+    var light = new THREE.PointLight();
+    light.position.set( 5, 5, 5 );
+    scene.add( light );
+
+    //var material = new THREE.MeshLambertMaterial();
+    var material = new THREE.ShaderMaterial({
+        vertexColors: THREE.VertexColors,
+        vertexShader: document.getElementById('gouraud.vert').text,
+        fragmentShader: document.getElementById('gouraud.frag').text,
+            uniforms: {
+            light_position: { type: 'v3', value: light.position }
+            }
+        });
+    mesh = new THREE.Mesh( geometry, material );
+    removefig();
+    return mesh;
+    }
+  
 
     function cell_node_indices( cell_index )
     {
@@ -170,36 +206,14 @@ function Isosurfaces( volume, isovalue )
 
     function interpolated_vertex( v0, v1,s0,s1, number, s )
     {
-        //var s0 = volume.values[ indices[v0_number] ][0];
-        //var s1 = volume.values[ indices[v1_number] ][0];
-        //var s0 = volume.values[ number[v0_number] ][0];
-        //var s1 = volume.values[ number[v1_number] ][0];
-
-        //if(s0+s1==0){
-          //  var x=(v0.x+v1.x)/2.0;
-          //  var y=(v0.y+v1.y)/2.0;
-          //  var z=(v0.z+v1.z)/2.0;
-        //}
-        //else{
-          //  var x=(v0.x*s1+v1.x*s0)/(s0+s1);
-          //  var y=(v0.y*s1+v1.y*s0)/(s0+s1);
-          //  var z=(v0.z*s1+v1.z*s0)/(s0+s1);
-        //}
-
         var x = (s1*v0.x-s0*v1.x-s*(v0.x-v1.x))/(s1-s0);
         var y = (s1*v0.y-s0*v1.y-s*(v0.y-v1.y))/(s1-s0);
         var z = (s1*v0.z-s0*v1.z-s*(v0.z-v1.z))/(s1-s0);
-
-        //var x=(v0.x+v1.x)/2.0;
-        //var y=(v0.y+v1.y)/2.0;
-        //var z=(v0.z+v1.z)/2.0;
-        //v=new THREE.Vector3().addVectors( v0, v1 ).divideScalar( 2 );
-        //document.write(Object.values(v)+"<br>");
-        //return v;
-        //return new THREE.Vector3().addVectors( v0, v1 ).divideScalar( 2 );
-        //document.write("x="+x+"y="+y+"z="+z);
-        //document.write("S0="+s0+"S1="+s1);
-        //document.write("x="+v1.x+"y="+v1.y+"z="+v1.z);
         return new THREE.Vector3(x,y,z);
+    }
+
+    function removefig(){
+        geometry.dispose();
+        material.dispose();
     }
 }

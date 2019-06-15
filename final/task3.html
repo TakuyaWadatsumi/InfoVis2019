@@ -1,17 +1,27 @@
 <html>
     <head>
-	<title>W09: Task3</title>
+	<title>Final Task</title>
     </head>
 	<body style="margin:0">
-    <script src="input_color.js"></script>
-    <form name="js">
-    red:<input type="button"
-    onclick="set_red()"
-    value="Red"/>
-    blue:<input type="button"
-    onclick="set_blue()"
-    value="Blue"/>
-    </form>
+	<div id="text" style="font-size: 24pt">
+		Final Task
+	</div>
+	<div id="display" style="width: 70%; float: left;"></div>
+	<div id="controller" style="width:20%; float:right;">
+	<label id="label" style="font-family:Arial;"></label>
+	<input type="range" min="1" max="254" step="1" value="40"
+	id="isovalue" oninput="document.getElementById('output1').value=this.value"/>
+	<button id="btn1">color</button>
+	<button id="btn2">shader</button>
+	isovalue=<output id="output1">40</output><br><br><br>
+	---機能の説明---<br>
+	
+	"color","shader"ボタンを選択することによって、出力を変化させることができる。
+	[color]:transfer functionを用いて、isovalueを変化させることにより、色を割り当てる。
+	[shader]:isosurface renderingにshaderを適用する。
+	また、スライダーによって、しきい値isovalueを変化させることができる。
+	
+	</div>
 	<script src="https://threejs.org/build/three.min.js"></script>
 	<script type="x-shader/x-vertex" id="gouraud.vert">
 		varying vec3 point_color;
@@ -32,7 +42,7 @@
 			point_position = modelViewMatrix * vec4( position, 1.0 );
 			normal_vector = normalMatrix * normal;
 			vec3 C = color;
-			vec3 L = normalize( light_position - point_position.xyz );
+			vec3 L = normalize( light_position - point_position.xyz );	
 			vec3 N = normalize( normal_vector );
 			point_color = LambertianReflection( C, L, N );
 			gl_Position = projectionMatrix * point_position;
@@ -54,6 +64,9 @@
 	<script src="Bounds.js"></script>
 	<script src="3Isosurfaces.js"></script>
 	<script src="w09_main_ex03.js"></script>
+	<p>
+
+	</p>
 	<script>
 	 main();
 	</script>
